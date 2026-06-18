@@ -477,7 +477,7 @@ server <- function(input, output, session) {
       }, ignoreNULL = TRUE, ignoreInit = TRUE)
     })
   }
-
+  
   
   ## Picks which dataset (monthly/quarterly/yearly) to use based on the period dropdown
   
@@ -822,7 +822,7 @@ server <- function(input, output, session) {
             span(span(class="legend-swatch",
                       style="background:rgba(180,180,180,0.4);"), "No preference data available")
         ),
-
+        
         div(class = "section-label",
             paste0(period_label(),
                    " preference utilisation — ", measure_lbl,
@@ -832,6 +832,13 @@ server <- function(input, output, session) {
      font-size:12px; color:#444;",
             HTML("<b>Note:</b> The charts below show a selection of key trading partners and blocs.
           To view any country or bloc, use the <b>'Or select any country'</b> dropdown above.")
+        ),
+        div(style = "background:#fff8e1; border-left:4px solid #ffc107;
+     border-radius:2px; padding:7px 12px; margin-bottom:12px;
+     font-size:12px; color:#555;",
+            HTML("<b>Note:</b> PUR may vary naturally from quarter to quarter due to seasonal trade patterns, 
+          global events, exchange rate shifts, and changes in the most competitive sourcing country. 
+          A quarter-on-quarter decline does not indicate that the outcome goal is not being met.")
         ),
         
         fluidRow(
@@ -855,7 +862,7 @@ server <- function(input, output, session) {
           ))
         ),
         fluidRow(
-
+          
           column(6, div(class="mini-box",
                         h5("India"),
                         plotlyOutput("mini_india", height = "320px")
@@ -869,6 +876,19 @@ server <- function(input, output, session) {
       
     } else {
       tagList(
+        
+        # Quarterly caveat note
+        if (input$period == "quarterly") {
+          div(style = "background:#fff8e1; border-left:4px solid #ffc107;
+               padding:8px 14px; border-radius:2px; margin-bottom:10px;
+               font-size:12px; color:#555;",
+              HTML("<b>Note:</b> PUR may vary naturally from quarter to quarter due to 
+           seasonal trade patterns, global events, exchange rate shifts, and 
+           changes in the most competitive sourcing country. A quarter-on-quarter 
+           decline does not indicate that the outcome goal is not being met.")
+          )
+        },
+        
         div(class = "chart-panel",
             h4(paste0(period_label(), " preference utilisation — ",
                       selected_country())),
@@ -878,14 +898,15 @@ server <- function(input, output, session) {
                 actionButton("btn_breakdown",
                              label = uiOutput("breakdown_btn_label"),
                              style = "background-color:#2E75B6; color:white;
-                              border:none; padding:6px 16px;
-                              border-radius:3px; font-size:12px;
-                              cursor:pointer;")
+                          border:none; padding:6px 16px;
+                          border-radius:3px; font-size:12px;
+                          cursor:pointer;")
             )
         ),
         uiOutput("breakdown_panel")
       )
     }
+    
   })
   
   ## the headline statistics box with year buttons and the MFN/FTA/DCTS percentage sentence
@@ -1131,5 +1152,5 @@ server <- function(input, output, session) {
 }
 
 ## Run App
-  
+
 shinyApp(ui = ui, server = server)
