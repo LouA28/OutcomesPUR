@@ -5,8 +5,8 @@ account: louise.anokye@defra.gov.uk
 server: dash-connect-prd.azure.defra.cloud
 hostUrl: https://dash-connect-prd.azure.defra.cloud/__api__
 appId: 784
-bundleId: 4507
-url: https://dash-connect-prd.azure.defra.cloud/content/f4a97ae7-6ab5-439a-a3d6-2b59a9d0a551/
+bundleId: 4519
+url: https://dash-connect-prd.azure.defra.cloud/defraoutcomes/
 version: 1
 asMultiple: FALSE
 asStatic: FALSE
