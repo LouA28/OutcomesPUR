@@ -1,4 +1,3 @@
-
 ## Load library 
 
 library(shiny)
@@ -50,7 +49,7 @@ all_countries <- sort(unique(monthly$country_name[
 all_years <- sort(unique(monthly$Year))
 
 summary_countries <- c(
-  "CPTPP","Japan",
+  "European Union","CPTPP","Japan",
   "India","Australia","New Zealand", "United States"
 )
 
@@ -386,7 +385,9 @@ ui <- fluidPage(
         selectInput("country", label = NULL,
                     choices  = c("Overview" = "all",
                                  "── Blocs ──"    = "",
+                                 "European Union" = "European Union",
                                  "CPTPP"          = "CPTPP",
+                                 "DCTS"           = "DCTS",
                                  "── Countries ──" = "",
                                  "Australia"      = "Australia",
                                  "New Zealand"    = "New Zealand",
@@ -793,7 +794,7 @@ server <- function(input, output, session) {
     }
   })
   
-  ##  switches between the overview page (six mini charts) and the country detail page (main chart + breakdown button)
+  ##  switches between the overview page (seven mini charts) and the country detail page (main chart + breakdown button)
   
   output$main_content <- renderUI({
     if (is.null(selected_country())) {
@@ -862,7 +863,6 @@ server <- function(input, output, session) {
           ))
         ),
         fluidRow(
-          
           column(6, div(class="mini-box",
                         h5("India"),
                         plotlyOutput("mini_india", height = "320px")
@@ -870,6 +870,25 @@ server <- function(input, output, session) {
           column(6, div(class="mini-box",
                         h5("United States"),
                         plotlyOutput("mini_us", height = "320px")
+          ))
+        ),
+        fluidRow(
+          column(6, div(class="mini-box",
+                        h5("European Union"),
+                        plotlyOutput("mini_eu", height = "320px")
+          )),
+          column(6, div(
+            style = "background:white; border:2px dashed #B8C9E8; border-radius:4px;
+                     height:360px; margin-bottom:14px;
+                     display:flex; flex-direction:column;
+                     align-items:center; justify-content:center;
+                     text-align:center; color:#8a9bc4; padding:20px;",
+            icon("chart-column", style = "font-size:34px; margin-bottom:12px;"),
+            div(style = "font-size:14px; font-weight:bold; color:#1B2A5E;",
+                "More coming soon"),
+            div(style = "font-size:12px; margin-top:6px; max-width:320px;",
+                "Additional countries and blocs will be added here.
+                 In the meantime, use the dropdown above to view any country.")
           ))
         )
       )
@@ -997,7 +1016,7 @@ server <- function(input, output, session) {
     paste0(m, " | ", agreement_text)
   })
   
-  ##  renders each of the six overview mini charts and registers click events so users can drill into a country
+  ##  renders each of the seven overview mini charts and registers click events so users can drill into a country
   
   render_mini <- function(country) {
     renderPlotly({
@@ -1008,6 +1027,7 @@ server <- function(input, output, session) {
     })
   }
   
+  output$mini_eu     <- render_mini("European Union")
   output$mini_cptpp  <- render_mini("CPTPP")
   output$mini_aus    <- render_mini("Australia")
   output$mini_nz     <- render_mini("New Zealand")
